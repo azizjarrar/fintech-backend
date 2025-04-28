@@ -71,7 +71,11 @@ exports.approveApplication = async (req, res, next) => {
     // Update application with the assigned lender and limit
     application.assignedLender = lender._id;
     application.assignedLimit = limit;
-    application.status = 'assigned_to_lender';  // Application is now assigned to a lender
+    if (application.status === 'approved'){
+      application.status = 'assigned_to_lender';  
+    }else{
+      application.status = 'rejected_by_madad'
+    }
     sendNotification([application.msme], 'Application Forwarded to Lender', 'Your application has been successfully forwarded to the lender for review.', application._id);
     sendNotification([lender.user], 'New Application Received', 'You have received a new application. Please review it at your earliest convenience.', application._id);
 
