@@ -162,7 +162,8 @@ exports.getApplications = async (req, res, next) => {
       tenure: 'N/A',
       createdAt: 'N/A',
       updatedAt: 'N/A',
-      monthlyAerageTransaction:"N/A"
+      monthlyAerageTransaction:"N/A",
+      invoiceAmount:'N/A'
     };
 
     // Helper to replace any empty value with "N/A" and format Dates
@@ -406,7 +407,13 @@ exports.fundInvoice = async (req, res,next) => {
       return res.status(400).json({ error: 'Missing invoice amount, interest rate, or tenure' });
     }
 
-    //  Calculate fees and fundedAmount
+    // Calculate the total fees:
+    // - invoiceAmount: total invoice value submitted by MSME
+    // - (application.interestRate / 100): convert the annual interest rate from % to decimal
+    // - (application.tenure / 12): convert the loan duration from months to fraction of a year
+    // Fees formula => invoiceAmount × annual interest rate × (tenure in months ÷ 12)
+
+
     const fees = invoiceAmount * (application.interestRate / 100) * (application.tenure / 12);
     const fundedAmount = invoiceAmount - fees;
 
