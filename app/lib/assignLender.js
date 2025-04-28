@@ -7,15 +7,13 @@ module.exports = async function assignLender(app,Monthly_Average_transaction) {
   for (const L of lenders) {
     const scoreMul = app.creditScore > L.creditScoreThreshold ? L.creditScoreMultiplierHigh: L.creditScoreMultiplierLow;
 
-
+    
     // check required docs
     const requiredDocs = ['cr', 'tradeLicense', 'taxCard', 'estdCertificate'];
     const availableDocs = requiredDocs.filter(doc => app.documents?.[doc]?.length > 0).length;
-    const scoreDocuments = availableDocs === 4 ? 1.2 : availableDocs === 3 ? 1.1 : availableDocs === 2 ? 1.05 : 1;
+    const scoreDocuments = availableDocs === 4 ? L.documentMultipliers.all4 : availableDocs === 3 ? L.documentMultipliers.any3 : availableDocs === 2 ? L.documentMultipliers.any2 : L.documentMultipliers.onlyCR;
     /* calc total */
     const total = Monthly_Average_transaction * scoreMul * scoreDocuments * (L.bankStatementMultiplier ) * (L.auditedReportMultiplier)
-
-    console.log("total",total)
 
     if (total > best.limit) best = { lender: L, limit: total };
   }
