@@ -57,13 +57,21 @@ exports.approveApplication = async (req, res, next) => {
       return res.status(404).json({ message: 'Application not found' });
     }
     // Check if the application is already approved or rejected
-    if (application.status === 'approved' || application.status === 'rejected') {
+    if (application.status === 'assigned_to_lender' || application.status === 'rejected_by_madad') {
       return res.status(400).json({ message: 'Application is already processed' });
     }
 
-    application.status = req.params.status;
+    if (req.params.status === 'approved'){
+      application.status = 'assigned_to_lender';  
+    }else{
+      application.status = 'rejected_by_madad'
+      await application.save();
+      return res.status(200).json({ message: 'rejected' });
+
+    }
 
     await application.save();
+
 
     // Run lender assignment logic
     const { lender, limit } = await assignLender(application, application.monthlyAerageTransaction);
@@ -71,11 +79,7 @@ exports.approveApplication = async (req, res, next) => {
     // Update application with the assigned lender and limit
     application.assignedLender = lender._id;
     application.assignedLimit = limit;
-    if (application.status === 'approved'){
-      application.status = 'assigned_to_lender';  
-    }else{
-      application.status = 'rejected_by_madad'
-    }
+
     sendNotification([application.msme], 'Application Forwarded to Lender', 'Your application has been successfully forwarded to the lender for review.', application._id);
     sendNotification([lender.user], 'New Application Received', 'You have received a new application. Please review it at your earliest convenience.', application._id);
 

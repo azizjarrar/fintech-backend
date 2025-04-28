@@ -37,6 +37,7 @@ const applicationSchema = new mongoose.Schema(
             enum: [
                 'approved',
                 'rejected',
+                'rejected_by_madad',
                 'submitted',
                 'under_review',
                 'assigned_to_lender',
