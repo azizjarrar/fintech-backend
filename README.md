@@ -9,7 +9,7 @@ This is the backend service for managing Applications, Authentication, and Notif
 1. **Clone the Repository**
 ```bash
 git clone https://github.com/azizjarrar/fintech-backend
-cd your-backend-repo
+cd fintech-backend
 ```
 
 2. **Install Dependencies**
