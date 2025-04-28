@@ -29,7 +29,7 @@ const fileFilter = (req, file, cb) => {
   const allowed = /pdf|jpeg|jpg|png/;
   const ext = path.extname(file.originalname).toLowerCase();
   if (allowed.test(ext)) cb(null, true);
-  else cb(new Error('Only PDF and image files are allowed'), false);
+  else cb(new Error('Only /pdf|jpeg|jpg|png/ and image files are allowed'), false);
 };
 
 const upload = multer({

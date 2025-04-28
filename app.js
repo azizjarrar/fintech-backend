@@ -34,15 +34,15 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(null, true);
       }
-      callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
   })
 );
-
 // --- Routes ---
 app.use('/auth', authRoute);
 app.use('/application', application_route);
