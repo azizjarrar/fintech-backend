@@ -22,7 +22,15 @@ exports.getNotifications = async (req, res) => {
   }
 };
 
-
+exports.getNotificationsunread=async (req,res)=>{
+  try {
+    const { id } = req.user;
+    const notifications = await Notification.find({ user: id,read:false}).sort({ createdAt: -1 });
+    res.status(200).json({numOfUnRead:notifications.length});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 
 
 // =========================================
