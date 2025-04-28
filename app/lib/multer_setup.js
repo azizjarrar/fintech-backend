@@ -20,8 +20,6 @@ const storage = multer.diskStorage({
     // After uploading the file, generate the URL
     const host = req.protocol + '://' + req.get('host'); // Use protocol (http/https) and host (127.0.0.1:5010)
     const fileUrl = `${host}/uploads/${filename}`;
-    
-    // You can now store or send the fileUrl as needed
     file.fileUrl = fileUrl;
 
   }

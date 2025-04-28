@@ -1,5 +1,3 @@
-// models/application.model.js
-
 const mongoose = require('mongoose');
 
 const applicationSchema = new mongoose.Schema(
@@ -46,6 +44,7 @@ const applicationSchema = new mongoose.Schema(
                 'invoice_uploaded',
                 'buyer_approved',
                 'invoice_funded',
+                'buyer_disapproved',
                 'closed'
             ],
             default: 'submitted'
@@ -55,7 +54,7 @@ const applicationSchema = new mongoose.Schema(
             type: Number // Credit line amount assigned by lender
         },
         uploadedInvoice: {
-            type: String, // Path to uploaded invoice file (if needed)
+            type: String, 
         },
 
         fundedAmount: {

@@ -43,9 +43,7 @@ exports.sendNotification = async ( users, title, message, link = '' ) => {
       if (!users || !title || !message) {
         throw new Error('Missing required parameters');
       }
-  
       const userList = Array.isArray(users) ? users : [users];
-  
       const notifications = userList.map(userId => ({
         user: userId,
         title,
